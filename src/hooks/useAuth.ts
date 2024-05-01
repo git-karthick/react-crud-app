@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import useAuthStore from "../authStore";
+import useAuthStore from "../store/authStore";
 import loginClient, { LoginResponse } from "../services/loginService";
 
 interface LoginData {

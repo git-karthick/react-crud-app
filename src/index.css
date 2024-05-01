@@ -1,0 +1,9 @@
+/* Always show scrollbar to prevent layout shift */
+html {
+  overflow-y: scroll;
+}
+
+/* Or using scrollbar-gutter for modern browsers */
+body {
+  scrollbar-gutter: stable both-edges;
+}

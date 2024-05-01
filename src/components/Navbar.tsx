@@ -4,11 +4,14 @@ import { NavLink } from "react-router-dom";
 import logo from "../assets/react.svg";
 import ColorModeButton from "./ColorModeButton";
 import LoginModal from "./LoginModal";
+import useAuthStore from "../store/authStore";
+import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
   const bgColor = useColorModeValue("brand.100", "brand.700");
   const color = useColorModeValue("brand.800", "brand.100");
   const [isLoginOpen, setLoginOpen] = useState(false);
+  const { token } = useAuthStore();
 
   return (
     <Flex
@@ -30,7 +33,11 @@ const Navbar = () => {
       <Flex align="center" gap={4}>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/users">Users</NavLink>
-        <Button onClick={() => setLoginOpen(true)}>Login</Button>
+        {token ? (
+          <UserAvatar />
+        ) : (
+          <Button onClick={() => setLoginOpen(true)}>Login</Button>
+        )}
         <ColorModeButton />
       </Flex>
       <LoginModal isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />

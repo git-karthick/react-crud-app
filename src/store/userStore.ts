@@ -1,4 +1,4 @@
-import { User } from "./entities/User";
+import { User } from "../entities/User";
 import { create } from "zustand";
 
 interface UsersQueryStore {
