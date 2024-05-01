@@ -1,22 +1,33 @@
 // src/components/UsersTable.tsx
 import { useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Box } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  Box,
+  Avatar,
+} from "@chakra-ui/react";
 import useFetchUsers from "../hooks/useFetchUsers"; // Make sure the import path is correct
 import APIClient from "../services/api-client"; // Make sure the import path is correct
 import { User } from "../entities/User";
+import TableSkeleton from "./TableSkeleton";
 
 const UsersTable = () => {
   const [page, setPage] = useState(1);
   const apiClient = new APIClient<User>("/users");
   const { data, error, isLoading } = useFetchUsers(apiClient, page);
 
-  if (isLoading) return <Box>Loading...</Box>;
-  if (error)
+  if (isLoading)
     return (
       <Box>
-        Error: {error instanceof Error ? error.message : "An error occurred"}
+        <TableSkeleton />
       </Box>
     );
+  if (error) throw error;
 
   return (
     <Box>
@@ -38,11 +49,7 @@ const UsersTable = () => {
               <Td>{user.first_name}</Td>
               <Td>{user.last_name}</Td>
               <Td>
-                <img
-                  src={user.avatar}
-                  alt="User Avatar"
-                  style={{ width: 30, height: 30 }}
-                />
+                <Avatar src={user.avatar} name={user.first_name} />
               </Td>
             </Tr>
           ))}

@@ -3,6 +3,7 @@ import Layout from "./pages/Layout";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import UsersTable from "./components/UsersTable";
+import PrivateRoute from "./components/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -15,8 +16,14 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/users",
-        element: <UsersTable />,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: "users",
+            element: <UsersTable />,
+            // children: [{ path: ':id', element: <UserDetail /> }],
+          },
+        ],
       },
     ],
   },

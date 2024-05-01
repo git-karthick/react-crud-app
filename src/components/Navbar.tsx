@@ -1,12 +1,14 @@
-import { Box, Flex, Image, useColorModeValue } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Flex, Image, useColorModeValue, Button } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/react.svg";
 import ColorModeButton from "./ColorModeButton";
+import LoginModal from "./LoginModal";
 
 const Navbar = () => {
   const bgColor = useColorModeValue("brand.100", "brand.700");
   const color = useColorModeValue("brand.800", "brand.100");
-  // const hoverBg = useColorModeValue("brand.300", "brand.600");
+  const [isLoginOpen, setLoginOpen] = useState(false);
 
   return (
     <Flex
@@ -26,30 +28,12 @@ const Navbar = () => {
         <Image src={logo} boxSize="40px" />
       </Box>
       <Flex align="center" gap={4}>
-        <NavLink
-          to="/"
-          style={({ isActive }) => ({
-            color: isActive
-              ? useColorModeValue("brand.500", "brand.300")
-              : useColorModeValue("brand.800", "brand.100"),
-            fontWeight: isActive ? "bold" : "normal",
-          })}
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/users"
-          style={({ isActive }) => ({
-            color: isActive
-              ? useColorModeValue("brand.500", "brand.300")
-              : useColorModeValue("brand.800", "brand.100"),
-            fontWeight: isActive ? "bold" : "normal",
-          })}
-        >
-          Users
-        </NavLink>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/users">Users</NavLink>
+        <Button onClick={() => setLoginOpen(true)}>Login</Button>
         <ColorModeButton />
       </Flex>
+      <LoginModal isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
     </Flex>
   );
 };

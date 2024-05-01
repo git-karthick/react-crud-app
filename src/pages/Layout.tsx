@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import Navbar from "../components/Navbar"; // Make sure to import your Navbar component
 import { Outlet } from "react-router";

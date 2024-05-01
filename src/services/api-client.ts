@@ -23,6 +23,12 @@ class APIClient<T> {
       .get<FetchResponse<T>>(this.endpoint, config)
       .then((res) => res.data);
   };
+
+  post = <D, R = T>(data: D, config: AxiosRequestConfig = {}): Promise<R> => {
+    return apiInstance
+      .post<R>(this.endpoint, data, config)
+      .then((res) => res.data);
+  };
 }
 
 export default APIClient;
