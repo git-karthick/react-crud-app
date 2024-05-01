@@ -1,11 +1,12 @@
-import { Box, Flex, Link, Image, useColorModeValue } from "@chakra-ui/react";
-import ColorModeButton from "./ColorModeButton";
+import { Box, Flex, Image, useColorModeValue } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 import logo from "../assets/react.svg";
+import ColorModeButton from "./ColorModeButton";
 
 const Navbar = () => {
   const bgColor = useColorModeValue("brand.100", "brand.700");
   const color = useColorModeValue("brand.800", "brand.100");
-  const hoverBg = useColorModeValue("brand.300", "brand.600");
+  // const hoverBg = useColorModeValue("brand.300", "brand.600");
 
   return (
     <Flex
@@ -25,26 +26,28 @@ const Navbar = () => {
         <Image src={logo} boxSize="40px" />
       </Box>
       <Flex align="center" gap={4}>
-        <Link
-          px={3}
-          py={2}
-          rounded="md"
-          href="/"
-          bg={bgColor}
-          _hover={{ bg: hoverBg }}
+        <NavLink
+          to="/"
+          style={({ isActive }) => ({
+            color: isActive
+              ? useColorModeValue("brand.500", "brand.300")
+              : useColorModeValue("brand.800", "brand.100"),
+            fontWeight: isActive ? "bold" : "normal",
+          })}
         >
           Home
-        </Link>
-        <Link
-          px={3}
-          py={2}
-          rounded="md"
-          href="/users"
-          bg={bgColor}
-          _hover={{ bg: hoverBg }}
+        </NavLink>
+        <NavLink
+          to="/users"
+          style={({ isActive }) => ({
+            color: isActive
+              ? useColorModeValue("brand.500", "brand.300")
+              : useColorModeValue("brand.800", "brand.100"),
+            fontWeight: isActive ? "bold" : "normal",
+          })}
         >
           Users
-        </Link>
+        </NavLink>
         <ColorModeButton />
       </Flex>
     </Flex>
