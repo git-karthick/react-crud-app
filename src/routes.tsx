@@ -7,6 +7,7 @@ import PrivateRoute from "./components/PrivateRoute";
 //import { Suspense, lazy } from "react";
 import TableSkeleton from "./components/TableSkeleton";
 import UserDetailsPage from "./pages/UserDetailsPage";
+import CreateUser from "./components/CreateUser";
 //const UsersTable = lazy(() => import("./components/UsersTable"));
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
           { path: "users/:id", element: <UserDetailsPage /> },
         ],
       },
+      { path: "newuser", element: <CreateUser /> },
     ],
   },
 ]);
