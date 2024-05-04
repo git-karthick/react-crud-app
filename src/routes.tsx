@@ -2,11 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "./pages/Layout";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
-//import UsersTable from "./components/UsersTable";
+import UsersTable from "./components/UsersTable";
 import PrivateRoute from "./components/PrivateRoute";
-import { Suspense, lazy } from "react";
+//import { Suspense, lazy } from "react";
 import TableSkeleton from "./components/TableSkeleton";
-const UsersTable = lazy(() => import("./components/UsersTable"));
+import UserDetailsPage from "./pages/UserDetailsPage";
+//const UsersTable = lazy(() => import("./components/UsersTable"));
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,13 +23,10 @@ const router = createBrowserRouter([
         children: [
           {
             path: "users",
-            element: (
-              <Suspense fallback={<TableSkeleton />}>
-                <UsersTable />
-              </Suspense>
-            ),
-            // children: [{ path: ':id', element: <UserDetail /> }],
+            element: <UsersTable />,
+            //children: [],
           },
+          { path: "users/:id", element: <UserDetailsPage /> },
         ],
       },
     ],
