@@ -8,29 +8,42 @@ import {
   FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
-
-interface FormData {
-  name: string;
-  job: string;
-}
+import { useCreateUser, FormData } from "../hooks/useCreateUser";
 
 const CreateUser = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset, // Now correctly included
   } = useForm<FormData>();
   const toast = useToast();
-
+  const { mutate, isLoading } = useCreateUser(); // Use the mutation function from the hook
   const onSubmit = (data: FormData) => {
-    // Simulate an API call
-    console.log(data);
-    toast({
-      title: "User Created",
-      description: "You have created a user successfully.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
+    mutate(data, {
+      onSuccess: () => {
+        // Handle success
+        toast({
+          title: "User Created",
+          description: "You have created a user successfully.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        reset(); // Reset form fields after submission
+      },
+      onError: (error: unknown) => {
+        // Correctly handle the unknown type
+        // Handle error
+        const errorMessage = (error as Error).message; // Type assertion
+        toast({
+          title: "Error Creating User",
+          description: `Error: ${errorMessage}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      },
     });
   };
 
@@ -69,7 +82,7 @@ const CreateUser = () => {
         <Button
           mt={4}
           colorScheme="blue"
-          isLoading={isSubmitting}
+          isLoading={isSubmitting || isLoading}
           type="submit"
         >
           Create User

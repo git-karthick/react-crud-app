@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/api-client";
 
-interface FormData {
+export interface FormData {
   name: string;
   job: string;
 }

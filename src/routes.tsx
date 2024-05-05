@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage";
 import UsersTable from "./components/UsersTable";
 import PrivateRoute from "./components/PrivateRoute";
 //import { Suspense, lazy } from "react";
-import TableSkeleton from "./components/TableSkeleton";
+//import TableSkeleton from "./components/TableSkeleton";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import CreateUser from "./components/CreateUser";
 //const UsersTable = lazy(() => import("./components/UsersTable"));
