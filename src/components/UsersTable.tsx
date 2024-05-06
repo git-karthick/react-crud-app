@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import {
   Box,
-  Button,
   Avatar,
   Table,
   Thead,
@@ -11,13 +10,14 @@ import {
   Td,
   TableContainer,
   Select,
-  ButtonGroup,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import useFetchUsers from "../hooks/useFetchUsers";
 import APIClient from "../services/api-client";
 import { User } from "../entities/User";
 import TableSkeleton from "./TableSkeleton";
 import { Link } from "react-router-dom";
+import Pagination from "./Pagination";
 
 const UsersTable = () => {
   const [page, setPage] = useState(1);
@@ -30,6 +30,9 @@ const UsersTable = () => {
     setPage(1); // Reset to first page when per page size changes
   };
 
+  const rowBg = useColorModeValue("gray.50", "gray.700");
+  const hoverBg = useColorModeValue("gray.100", "gray.600");
+
   if (isLoading && !data) {
     return (
       <Box>
@@ -37,14 +40,10 @@ const UsersTable = () => {
       </Box>
     );
   }
-  if (error) throw error;
-
-  const paginationRange = () => {
-    return [...Array(data?.total_pages || 0).keys()].map((n) => n + 1);
-  };
+  if (error) return <Box>Error loading users: {(error as any).message}</Box>;
 
   return (
-    <Box>
+    <Box overflowX="auto">
       <Select value={perPage} onChange={handleChangePerPage} w="auto" mb={4}>
         {[5, 10, 15, 20].map((size) => (
           <option key={size} value={size}>
@@ -54,7 +53,11 @@ const UsersTable = () => {
       </Select>
       <TableContainer>
         <Table variant="simple" size="md">
-          <Thead>
+          <Thead
+            position="sticky"
+            top="0"
+            bg={useColorModeValue("white", "gray.800")}
+          >
             <Tr>
               <Th width="50px">ID</Th>
               <Th width="200px">Email</Th>
@@ -64,14 +67,18 @@ const UsersTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.data.map((user) => (
-              <Tr key={user.id}>
+            {data?.data.map((user, index) => (
+              <Tr
+                key={user.id}
+                bg={index % 2 === 0 ? rowBg : "inherit"}
+                _hover={{ bg: hoverBg }}
+              >
                 <Td>{user.id}</Td>
                 <Td>{user.email}</Td>
                 <Td>{user.first_name}</Td>
                 <Td>{user.last_name}</Td>
                 <Td>
-                  <Link to={"/users/" + user.id}>
+                  <Link to={`/users/${user.id}`}>
                     <Avatar
                       src={user.avatar}
                       name={`${user.first_name} ${user.last_name}`}
@@ -83,17 +90,11 @@ const UsersTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
-      <ButtonGroup spacing={2} mt={4}>
-        {paginationRange().map((pageNum) => (
-          <Button
-            key={pageNum}
-            onClick={() => setPage(pageNum)}
-            isActive={pageNum === page}
-          >
-            {pageNum}
-          </Button>
-        ))}
-      </ButtonGroup>
+      <Pagination
+        total={data?.total_pages || 1}
+        current={page}
+        setPage={setPage}
+      />
     </Box>
   );
 };

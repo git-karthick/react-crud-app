@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -11,8 +11,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  FormErrorMessage,
   useToast,
-  Text,
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
 
@@ -28,13 +28,13 @@ const LoginModal = ({ isOpen, onClose }: Props) => {
   const { mutate: login, isLoading, isError, error } = useAuth();
 
   useEffect(() => {
-    if (isOpen && !isLoading) {
+    if (isOpen) {
       setUsername("");
       setPassword("");
     }
-  }, [isOpen, isLoading]);
+  }, [isOpen]);
 
-  const onLogin = useCallback(() => {
+  const onLogin = () => {
     if (!username || !password) {
       toast({
         title: "Error",
@@ -70,7 +70,7 @@ const LoginModal = ({ isOpen, onClose }: Props) => {
         },
       }
     );
-  }, [username, password, login, toast, onClose, error]);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -79,7 +79,7 @@ const LoginModal = ({ isOpen, onClose }: Props) => {
         <ModalHeader>Login</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
+          <FormControl isInvalid={isError}>
             <FormLabel htmlFor="username">Username</FormLabel>
             <Input
               id="username"
@@ -87,10 +87,11 @@ const LoginModal = ({ isOpen, onClose }: Props) => {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               isDisabled={isLoading}
+              aria-label="Username"
             />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password" mt={4}>
+              Password
+            </FormLabel>
             <Input
               id="password"
               type="password"
@@ -98,12 +99,11 @@ const LoginModal = ({ isOpen, onClose }: Props) => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               isDisabled={isLoading}
+              aria-label="Password"
             />
-            {isError && (
-              <Text color="red.500" mt={2}>
-                {error?.message || "Login error"}
-              </Text>
-            )}
+            <FormErrorMessage>
+              {error?.message || "Login error"}
+            </FormErrorMessage>
           </FormControl>
         </ModalBody>
         <ModalFooter>
