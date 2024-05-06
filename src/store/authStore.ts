@@ -18,7 +18,7 @@ const useAuthStore = create<AuthQueryStore>(
     }),
     {
       name: "auth-storage", // the name used for localStorage key
-      getStorage: () => localStorage, // specifying localStorage as the storage mechanism
+      getStorage: () => sessionStorage, // specifying localStorage as the storage mechanism
     }
   ) as StateCreator<AuthQueryStore, [], []>
 ); // Explicitly casting the type here
