@@ -8,19 +8,25 @@ interface LoginData {
 }
 
 const useAuth = () => {
-  const setCredentials = useAuthStore((state) => state.setCredentials);
+  const { setCredentials } = useAuthStore((state) => ({
+    setCredentials: state.setCredentials,
+    // setError: state.setError
+  }));
 
-  return useMutation<LoginResponse, Error, LoginData>(
+  const loginMutation = useMutation<LoginResponse, Error, LoginData>(
     (loginData: LoginData) => loginClient.login(loginData),
     {
       onSuccess: (response, variables) => {
         setCredentials(variables.email, response.token);
       },
-      onError: (error) => {
-        console.error("Login failed:", error.message);
-      },
+      // onError: (error) => {
+      //   //setError(`Login failed: ${error.message}`);
+      //   // Optionally, handle different types of errors differently
+      // },
     }
   );
+
+  return loginMutation;
 };
 
 export default useAuth;

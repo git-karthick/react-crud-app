@@ -8,7 +8,7 @@ import {
   FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
-import { useCreateUser, FormData } from "../hooks/useCreateUser";
+import useCreateUser, { FormData } from "../hooks/useCreateUser";
 
 const CreateUser = () => {
   const {

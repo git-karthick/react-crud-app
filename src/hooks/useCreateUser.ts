@@ -1,4 +1,3 @@
-// hooks/useCreateUser.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/api-client";
 
@@ -16,15 +15,25 @@ interface UserResponse {
 
 const usersClient = new APIClient<UserResponse>("/users");
 
-export function useCreateUser() {
+// It might be useful to define query keys in a more structured way
+const QUERY_KEYS = {
+  users: ["users"],
+};
+
+const useCreateUser = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(
+  const mutation = useMutation<UserResponse, Error, FormData>(
     (data: FormData) => usersClient.post<FormData, UserResponse>(data),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["users"]);
+        queryClient.invalidateQueries(QUERY_KEYS.users);
       },
+      // Optionally handle onError and onSettled as well
     }
   );
-}
+
+  return mutation; // This now explicitly returns the mutation object
+};
+
+export default useCreateUser;
